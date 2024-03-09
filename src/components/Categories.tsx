@@ -44,7 +44,7 @@ const Categories = () => {
                     name: '',
                 });
             })
-            .catch((error: any) => { // Обрабатываем ошибку с помощью any, но лучше указать конкретный тип ошибки
+            .catch((error: any) => {
                 console.error('Error sending data:', error);
             });
     };
@@ -70,15 +70,6 @@ const Categories = () => {
                     value={formData.name}
                     onChange={handleChange}
                 />
-                <select
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                >
-                    <option value="income">IDK</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
                 <button type="submit">Submit</button>
             </form>
             <div className="cardsContainer">
