@@ -16,7 +16,7 @@ export const sendTransactionData = createAsyncThunk(
             const response = await axios.post('https://testapi2-bf456-default-rtdb.asia-southeast1.firebasedatabase.app/transactions.json', transactionData);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue((error as Error).message);
         }
     }
 );
@@ -35,13 +35,13 @@ export const getTransactions = createAsyncThunk(
 
 export const deleteTransactionData = createAsyncThunk(
     'transactions/deleteTransactionData',
-    async (transactionId: string, { rejectWithValue }) => {
+    async (id: string, { rejectWithValue }) => {
         try {
-            const response = await axios.delete(`https://testapi2-bf456-default-rtdb.asia-southeast1.firebasedatabase.app/transactions/${transactionId}.json`);
-            return transactionId;
+            await axios.delete(`https://testapi2-bf456-default-rtdb.asia-southeast1.firebasedatabase.app/transactions/${id}.json`);
+            return id;
         } catch (error) {
             console.error('Error deleting transaction:', error);
-            return rejectWithValue(error.message);
+            return rejectWithValue((error as Error).message);
         }
     }
 );
@@ -70,14 +70,8 @@ const transactionSlice = createSlice({
     name: 'transactions',
     initialState,
     reducers: {
-        setFormData(state, action) {
-            state.formData = action.payload;
-        },
         clearFormData(state) {
             state.formData = initialState.formData;
-        },
-        deleteTransaction(state, action) {
-            state.transactions = state.transactions.filter(transaction => transaction.id !== action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -94,5 +88,5 @@ const transactionSlice = createSlice({
     },
 });
 
-export const { setFormData, clearFormData, deleteTransaction } = transactionSlice.actions;
+export const {  clearFormData } = transactionSlice.actions;
 export default transactionSlice.reducer;

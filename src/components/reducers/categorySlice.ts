@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import categories from "../Categories.tsx";
 
 interface Category {
     name: string;
@@ -32,13 +33,14 @@ export const getCategory = createAsyncThunk(
 );
 
 export const deleteCategoryData = createAsyncThunk(
-    'categories/deleteCategoryData',
-    async (categoryId: string, { rejectWithValue }) => {
+    'categories/deleteCategorieData',
+    async (id: string, { rejectWithValue }) => {
         try {
-            const response = await axios.delete(`https://testapi2-bf456-default-rtdb.asia-southeast1.firebasedatabase.app/categories/${categoryId}.json`);
-            return categoryId;
+            await axios.delete(`https://testapi2-bf456-default-rtdb.asia-southeast1.firebasedatabase.app/categories/${id}.json`);
+            return id;
         } catch (error) {
-            return rejectWithValue(error.message);
+            console.error('Error deleting category:', error);
+            return rejectWithValue((error as Error).message);
         }
     }
 );
