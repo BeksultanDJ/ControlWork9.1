@@ -30,10 +30,14 @@ const AddExIn = ({ handleCloseForm }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        let amount = parseFloat(localFormData.amount);
+        if (localFormData.type === 'expense') {
+            amount = -Math.abs(amount);
+        }
         const transactionData = {
             id: uuidv4(),
             category: localFormData.category,
-            amount: parseFloat(localFormData.amount),
+            amount: amount,
             createdAt: new Date().toISOString(),
         };
         dispatch(sendTransactionData(transactionData));
