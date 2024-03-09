@@ -9,10 +9,16 @@ const DisplayInfo: React.FC = () => {
     const dispatch = useDispatch();
     const transactions = useSelector((state: any) => state.transactions.transactions);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [totalAmount, setTotalAmount] = useState<number>(0);
 
     useEffect(() => {
         dispatch(getTransactions());
     }, [dispatch]);
+
+    useEffect(() => {
+        const sum = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+        setTotalAmount(sum);
+    }, [transactions]);
 
     const toggleAddForm = () => {
         setShowAddForm(!showAddForm);
@@ -38,6 +44,7 @@ const DisplayInfo: React.FC = () => {
                         <strong onClick={toggleAddForm}>Add</strong>
                     </div>
                 </div>
+                <div>Total Amount: {totalAmount}</div>
             </header>
             <div className="cardsContainer">
                 {Array.isArray(transactions) && transactions.length > 0 ? (
